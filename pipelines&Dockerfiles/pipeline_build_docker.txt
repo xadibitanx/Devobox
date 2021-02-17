@@ -1,0 +1,31 @@
+node("JenkinsAgent") {
+    customimage = ""
+    stage("create dockerfile"){
+        sh """
+          tee Dockerfile <<-'EOF'
+          FROM training/webapp:latest
+EOF
+         """
+        
+    }
+    
+        stage("whoami") {
+        sh "whoami"
+        
+}
+   
+    
+    stage("run docker") {
+        sh "docker run -t -d --rm training/webapp:latest"
+        
+}
+    
+    stage("varify images") {
+        sh "docker images"
+}
+
+    stage("varify docker") {
+        sh "docker ps -a"
+        
+}
+}

@@ -1,0 +1,31 @@
+pipeline {
+	agent
+	{
+		node{
+				label 'master'
+				customworkspace "${env.JobPath}"
+			}
+	}
+	
+	parameters {
+		choice(choice: ['enable', 'disabled'],name: 'deploy')
+	}
+	stages
+	{
+		stage ( ' build devops-deploy-webapp') {
+			steps {
+				script
+					if ("${param.deploy}" == 'enabled' ) {
+					    echo " deploy is ${params.deploy} "
+						build 'devops-deploy-webapp'
+					}
+					else {
+						echo "deploy is ${param.deploy}"
+						echo "no more action will perform"
+					}
+				}
+			}
+		}
+	}
+
+						
