@@ -1,0 +1,58 @@
+node("master") {
+    customimage = ""
+    stage("whereami") {
+        sh "cp -r /home/ubuntu/kandula_assignment ./"
+        
+}
+    stage("whereami") {
+        sh "cd /var/lib/jenkins/workspace/push_app_kandula_docker_image_to_docker_hub/kandula_assignment"
+        
+}
+    stage("create dockerfile"){
+        sh """
+          tee Dockerfile <<-'EOF'
+          FROM python:3.7-slim
+            
+            RUN mkdir /kandula
+            
+            COPY . /kandula/
+            
+            WORKDIR /kandula
+            RUN pip install --upgrade pip
+            RUN pip install -r requirements.txt
+            
+            CMD ["/bin/bash", "bin/run"]
+EOF
+         """
+        
+    }
+    
+        stage("whoami") {
+        sh "whoami"
+        
+}
+        stage("whereami") {
+        sh "pwd"
+        
+}
+
+ 
+     stage("build docker") {
+        sh "docker build . -t kandula"
+        
+}  
+    
+    stage("run docker") {
+        sh "docker run -t -d --rm myapp"
+        
+}
+    
+    stage("varify images") {
+        sh "docker images"
+}
+
+    stage("varify docker") {
+        sh "docker ps -a"
+        
+}
+}
